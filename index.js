@@ -14,3 +14,27 @@ knex.from('todos')
 .finally (function () {
     knex.destroy()
 })
+
+var config = require('./knexfile').development
+var knex = require('knex')(config)
+
+function logError (err) {
+  console.log('Error', err)
+}
+
+function closeDB () {
+knex.destroy()
+}
+
+function printTable () {
+return knex('users')
+  .select()
+  .then( function (data) {
+    console.log("the table: ", data)
+    })
+  .catch(logError)
+  .finally(closeDB)
+}
+
+printTable()
+
